@@ -1,0 +1,45 @@
+# deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locust
+  namespace: fastapi-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: locust
+  template:
+    metadata:
+      labels:
+        name: locust
+    spec:
+      containers:
+        - name: locust
+          image: docker.io/library/rabbitmq_celery_poc:latest
+          imagePullPolicy: Never
+          command:
+            - /locust
+          ports:
+            - containerPort: 8089
+              name: locust
+          resources:
+            requests:
+              cpu: "2"
+              memory: 500Mi
+            limits:
+              cpu: "3"
+              memory: 1Gi
+---
+# service
+apiVersion: v1
+kind: Service
+metadata:
+  name: locust
+  namespace: fastapi-test
+spec:
+  selector:
+    name: locust
+  ports:
+    - port: 8089
+      targetPort: locust

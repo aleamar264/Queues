@@ -1,0 +1,30 @@
+auth:
+  username: rabbitmq
+  password: rabbitmq
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: false
+
+persistence:
+  enabled: true
+  storageClass: "hostpath"
+  accessModes:
+    - ReadWriteOnce
+  size: 4Gi
+
+replicaCount: 3
+
+resources:
+  requests:
+    memory: 1Gi
+    cpu: 1
+  limits:
+    memory: 1.5Gi
+    cpu: 1.5
+
+livenessProbe:
+  enabled: true
+readinessProbe:
+  enabled: true
