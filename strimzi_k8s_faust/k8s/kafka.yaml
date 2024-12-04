@@ -1,0 +1,142 @@
+# apiVersion: kafka.strimzi.io/v1beta2
+# kind: KafkaNodePool
+# metadata:
+#   name: dual-role
+#   labels:
+#     strimzi.io/cluster: my-cluster
+# spec:
+#   replicas: 3
+#   roles:
+#     - controller
+#     - broker
+#   storage:
+#     type: jbod
+#     volumes:
+#       - id: 0
+#         type: persistent-claim
+#         size: 3Gi
+#         deleteClaim: false
+#         kraftMetadata: shared
+# ---
+# apiVersion: kafka.strimzi.io/v1beta2
+# kind: KafkaNodePool
+# metadata:
+#   name: pool-a
+#   labels:
+#     strimzi.io/cluster: my-cluster
+# spec:
+#   replicas: 3
+#   roles:
+#     - broker # (1)
+#   storage:
+#     type: jbod
+#     volumes:
+#       - id: 0
+#         type: persistent-claim
+#         size: 3Gi
+#         deleteClaim: false
+#   resources:
+#     requests:
+#       memory: 2Gi
+#       cpu: "2"
+#     limits:
+#       memory: 2.5Gi
+#       cpu: "3"
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: my-cluster
+  # annotations:
+  #   strimzi.io/node-pools: enabled
+  #   strimzi.io/kraft: enabled
+spec:
+  kafka:
+    replicas: 3
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+        configuration:
+          useServiceDnsDomain: true #
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+    storage:
+      type: jbod
+      volumes:
+        - id: 0
+          type: persistent-claim
+          size: 3Gi
+          deleteClaim: false
+    config:
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      default.replication.factor: 3
+      min.insync.replicas: 2
+      auto.create.topics.enable: true
+    resources: # (13)
+      requests:
+        memory: 2Gi
+        cpu: "2"
+      limits:
+        memory: 4Gi
+        cpu: "3"
+  zookeeper:
+    replicas: 3
+    storage:
+      type: persistent-claim
+      size: 2Gi
+      deleteClaim: false
+    resources: # (13)
+      requests:
+        memory: 1Gi
+        cpu: "1"
+      limits:
+        memory: 1.5Gi
+        cpu: "1.5"
+  entityOperator:
+    topicOperator:
+      # Resources requests and limits (recommended)
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: "1"
+        limits:
+          memory: 512Mi
+          cpu: "1"
+    userOperator:
+      # Resources requests and limits (recommended)
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: "1"
+        limits:
+          memory: 512Mi
+          cpu: "1"
+  kafkaExporter:
+    groupRegex: ".*"
+    topicRegex: ".*"
+    livenessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+    readinessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+    #   resources:
+    #     requests:
+    #       memory: 512Mi
+    #       cpu: "1"
+    #     limits:
+    #       memory: 512Mi
+    #       cpu: "1"
+    #   resources:
+    #     requests:
+    #       memory: 512Mi
+    #       cpu: "1"
+    #     limits:
+    #       memory: 512Mi
+    #       cpu: "1"

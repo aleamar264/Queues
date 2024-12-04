@@ -1,0 +1,53 @@
+# namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: faust-workers
+---
+# deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faust-worker
+  namespace: faust-workers
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: faust-worker
+  template:
+    metadata:
+      labels:
+        name: faust-worker
+    spec:
+      containers:
+        - name: faust-worker
+          image: docker.io/library/strimzi_faust:latest
+          imagePullPolicy: Never
+          command:
+            - /worker.sh
+          ports:
+            - containerPort: 6066
+              name: rest
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "500Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+---
+# service
+apiVersion: v1
+kind: Service
+metadata:
+  name: faust-worker
+  namespace: faust-workers
+spec:
+  selector:
+    name: faust-worker
+  ports:
+    - name: http
+      protocol: TCP
+      port: 6066
+      targetPort: rest

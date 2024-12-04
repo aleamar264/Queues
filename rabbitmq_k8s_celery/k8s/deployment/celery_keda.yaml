@@ -13,7 +13,7 @@ spec:
     - type: rabbitmq
       metadata:
         queueName: Test_Query
-        queueLength: "100ß"
+        queueLength: "1000"
       authenticationRef:
         name: rabbitmq-worker-trigger
 ---

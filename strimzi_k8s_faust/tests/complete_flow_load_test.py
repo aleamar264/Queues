@@ -36,7 +36,7 @@ class ReportService(FastHttpUser):
 		resp = self.client.post(url, json=data)
 		if resp.status_code != 200:
 			return
-		task_id = resp.json().get("task_id")
+		task_id = resp.json().get("uuid")
 
 		start_time = time.monotonic()
 		end_time = start_time + timeout

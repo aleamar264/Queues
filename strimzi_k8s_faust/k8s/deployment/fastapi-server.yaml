@@ -4,17 +4,6 @@ kind: Namespace
 metadata:
   name: fastapi-test
 ---
-# secret
-apiVersion: v1
-kind: Secret
-metadata:
-  name: fastapi-secret
-  namespace: fastapi-test
-type: Opaque
-data:
-  CELERY_BROKER_URL: YW1xcDovL3JhYmJpdG1xOnJhYmJpdG1xQHJhYmJpdG1xLWhlYWRsZXNzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWw6NTY3Mi8v
-  SECRET_KEY: dGVzdA==
----
 # deployment
 apiVersion: apps/v1
 kind: Deployment
@@ -33,13 +22,10 @@ spec:
     spec:
       containers:
         - name: fastapi
-          image: docker.io/library/rabbitmq_celery_poc:latest
+          image: docker.io/library/strimzi_faust:latest
           imagePullPolicy: Never
           command:
             - /start
-          envFrom:
-            - secretRef:
-                name: fastapi-secret
           ports:
             - containerPort: 8001
               name: rest

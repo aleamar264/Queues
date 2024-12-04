@@ -1,0 +1,6 @@
+{
+    "ros.distro": "humble",
+    "python.analysis.extraPaths": [
+        "./strimzi_k8s_faust/src"
+    ]
+}
