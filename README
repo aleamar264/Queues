@@ -1,0 +1,59 @@
+# Queues with FastAPI and K8S
+
+Here we will testing 2 different ways of process data:
+
+1. Queues
+   1. RabbitMQ
+2. Pub/Sub
+   1. Strimzi (Kafka Operator)
+
+Each one had own advantages/disadvantages, in this POC we wiil look for easy implementation, customize and so on.
+
+The project is distributed like this:
+
+```shell
+.
+├── rabbitmq_k8s_celery
+│   ├── k8s
+│   │   ├── deployment
+│   │   └── helm
+│   ├── src
+│   │   ├── celery_tools
+│   │   │   ├── celery_tasks
+│   │   │   │   └── __pycache__
+│   │   │   ├── config
+│   │   │   │   └── __pycache__
+│   │   │   ├── __pycache__
+│   │   │   └── serializer
+│   │   ├── __pycache__
+│   │   ├── routes
+│   │   │   └── __pycache__
+│   │   └── schemas
+│   │       └── __pycache__
+│   └── tests
+│       └── __pycache__
+└── strimzi_k8s_faust
+    ├── k8s
+    │   ├── deployment
+    │   ├── helm
+    │   └── kafka
+    ├── src
+    │   ├── example-data
+    │   │   └── v1
+    │   │       └── tables
+    │   ├── faust_tools
+    │   │   ├── consumer
+    │   │   │   └── __pycache__
+    │   │   ├── faust_schema
+    │   │   │   └── __pycache__
+    │   │   └── __pycache__
+    │   ├── __pycache__
+    │   ├── redis_records
+    │   ├── routes
+    │   │   └── __pycache__
+    │   └── schemas
+    │       └── __pycache__
+    └── tests
+```
+
+The conclusion is in each one of the folder where is implemented the technology.

@@ -126,17 +126,3 @@ spec:
     readinessProbe:
       initialDelaySeconds: 15
       timeoutSeconds: 5
-    #   resources:
-    #     requests:
-    #       memory: 512Mi
-    #       cpu: "1"
-    #     limits:
-    #       memory: 512Mi
-    #       cpu: "1"
-    #   resources:
-    #     requests:
-    #       memory: 512Mi
-    #       cpu: "1"
-    #     limits:
-    #       memory: 512Mi
-    #       cpu: "1"

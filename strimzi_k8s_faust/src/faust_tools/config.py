@@ -18,6 +18,7 @@ app = App(
 	# store=STORE_DATA,
 	autodiscover=True,
 	origin="faust_tools",
+	consumer_group="my-streaming-consumer-group",
 )
 
 input_testing_1 = app.topic("task_1", value_type=Input, partitions=3)

@@ -15,13 +15,13 @@ spec:
       metadata:
         bootstrapServers: my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
         topic: task_1
-        consumerGroup: example
+        consumerGroup: my-streaming-consumer-group
         lagThreshold: "50" # Scale when lag exceeds 1000
         # offsetResetPolicy: "latest"
     - type: kafka
       metadata:
         bootstrapServers: my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
         topic: task_2
-        consumerGroup: example
+        consumerGroup: my-streaming-consumer-group
         lagThreshold: "30" # Scale when lag exceeds 1000
         # offsetResetPolicy: "latest"
